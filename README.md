@@ -1,23 +1,58 @@
 # Celestial Clock
 
-A lightweight, production-ready website that tells human time using a starfield heartbeat (seconds) and planetary orbits (minutes and hours).
+> Built for HackTX 2025 — a cosmic hackathon project that visualizes time as celestial motion.
 
-- Seconds: subtle pulsing/twinkling stars
-- Minutes: Mercury completes one revolution per minute (tracks seconds within the minute)
-- Hours: Earth completes one revolution per hour (tracks minutes within the hour)
+## What is it?
 
-No build tools required. Pure HTML/CSS/JS.
+Celestial Clock is a real-time, interactive website that tells time using stars and planetary orbits. Instead of numbers, you see:
 
-## Run locally
+- **Starfield heartbeat:** Animated stars pulse and twinkle every second.
+- **Planetary orbits:** Each planet tracks a different time cycle:
+	- Mercury: seconds in a minute (color reflects stock market performance)
+	- Earth: minutes in an hour (color reflects real-time CO2 concentration)
+	- Venus: hours in a day
+	- Mars: day of week
+	- Jupiter: day of month
+	- Saturn: day of year
+- **Landing page:** Animated cosmic stars and a purple-themed start button.
+- **Control panel:** Toggle orbits, switch theme, adjust animation speed, and more.
+- **Accessibility:** ARIA live regions, keyboard navigation, and responsive design.
 
-Open `index.html` directly in your browser or host the folder with any static server.
+## Tech Stack
 
-## Implementation notes
+- **Languages:** HTML, CSS, JavaScript (ES6+)
+- **Graphics:** SVG (orbits, planets), Canvas (starfields)
+- **APIs:**
+	- Alpha Vantage (stock market data for Mercury)
+	- Open-Meteo Air Quality API (CO2 data for Earth)
+- **Fonts:** Google Fonts (Montserrat, Poppins)
+- **No frameworks, no backend, no database.**
 
-- Starfield uses a single `<canvas>` with devicePixelRatio scaling and a decaying pulse once per second.
-- Orbits are SVG ellipses with planets positioned via JS. Angles are derived from the current system time for smooth motion.
-- Accessibility: time text is updated in an ARIA live region; keyboard support for the 12h/24h toggle.
+## How to Run Locally
 
-## Deployment
+1. Clone the repo:
+	 ```sh
+	 git clone https://github.com/yliu00/celestial-clock.git
+	 cd celestial-clock
+	 ```
+2. Open `index.html` in your browser.
+3. Or serve with any static server (e.g., Python, VS Code Live Server).
 
-Serve the folder with a static host (e.g., GitHub Pages, Netlify, Vercel, Azure Static Web Apps). No server-side code required.
+## Features
+
+- Animated starfield background and landing overlay
+- Real-time planetary orbits for all major time cycles
+- Dynamic planet colors based on live stock market and CO2 data
+- Beautiful, modern UI with cosmic gradients and themes
+- Fully accessible and responsive
+
+## HackTX Notes
+
+- Built in 24 hours for HackTX 2025
+- Team: Yichen & Annabelle
+- APIs used: Alpha Vantage, Open-Meteo
+- No backend, no database, just pure client-side magic
+
+---
+
+Made with 💜 at HackTX

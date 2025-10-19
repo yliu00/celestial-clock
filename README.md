@@ -2,6 +2,8 @@
 
 > Built for HackTX 2025 — a cosmic hackathon project that visualizes time as celestial motion.
 
+**Live Demo:** https://yliu00.github.io/celestial-clock/
+
 ## What is it?
 
 Celestial Clock is a real-time, interactive website that tells time using stars and planetary orbits. Instead of numbers, you see:

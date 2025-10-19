@@ -1,0 +1,275 @@
+/* Landing/Loading overlay styles */
+#landing {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background:
+    radial-gradient(1200px 800px at 20% 15%, #0f1430 0%, transparent 60%),
+    radial-gradient(1000px 900px at 80% 85%, #061321 0%, transparent 55%),
+    linear-gradient(180deg, #02030a 0%, #050610 50%, #0a0d20 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.7s cubic-bezier(.7,.2,.2,1);
+}
+#landing[aria-hidden="true"] {
+  opacity: 0;
+  pointer-events: none;
+}
+.landing-content {
+  text-align: center;
+  color: #e8efff;
+  padding: 48px 32px 32px 32px;
+  background: color-mix(in oklab, white 2%, transparent);
+  border-radius: 18px;
+  box-shadow: 0 4px 32px #0008;
+  position: relative;
+}
+.landing-title {
+  font-size: 2.7rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin-bottom: 18px;
+  text-shadow: 0 2px 16px #0008;
+}
+.landing-desc {
+  font-size: 1.2rem;
+  margin-bottom: 32px;
+  color: #b7cfff;
+  text-shadow: 0 1px 8px #0006;
+}
+
+.landing-start {
+  font-size: 1.1rem;
+  padding: 12px 38px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(90deg, #a259ff 0%, #6a82fb 100%);
+  color: #fff0ff;
+  font-weight: 600;
+  box-shadow: 0 2px 12px #a259ff44;
+  cursor: pointer;
+  margin-bottom: 18px;
+  transition: background 0.2s;
+}
+.landing-start:hover {
+  background: linear-gradient(90deg, #6a82fb 0%, #a259ff 100%);
+}
+/* Starfield dots for landing overlay */
+.landing-stars {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 60px;
+  width: 100%;
+  pointer-events: none;
+  opacity: 0.8;
+  z-index: 2;
+  background: none;
+  display: block;
+}
+/* Floating control panel styles */
+#controls {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  z-index: 10;
+  background: color-mix(in oklab, white 6%, transparent);
+  backdrop-filter: blur(8px) saturate(120%);
+  border-radius: 14px;
+  box-shadow: 0 2px 16px #0005;
+  padding: 0;
+  min-width: 220px;
+  color: var(--fg);
+  font-size: 15px;
+  transition: background 0.3s;
+}
+#controlsToggle {
+  display: block;
+  width: 100%;
+  background: #0c1122cc;
+  color: var(--fg);
+  border: none;
+  border-radius: 14px 14px 0 0;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 10px 0;
+  cursor: pointer;
+  text-align: left;
+}
+#controlsPanel {
+  padding: 18px 20px 14px 20px;
+  border-radius: 0 0 14px 14px;
+  display: block;
+}
+#controls.collapsed #controlsPanel {
+  display: none;
+}
+#controls h2 {
+  font-size: 16px;
+  margin: 0 0 10px 0;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+.control-group {
+  margin-bottom: 14px;
+}
+.orbit-toggles label {
+  display: inline-block;
+  margin-right: 10px;
+  font-size: 14px;
+}
+#themeSelect, #markerStyle {
+  font-size: 14px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  border: 1px solid #ffffff33;
+  background: #0c1122cc;
+  color: var(--fg);
+}
+#speedRange {
+  width: 90px;
+  vertical-align: middle;
+}
+#speedValue {
+  margin-left: 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
+#pauseBtn {
+  font-size: 14px;
+  padding: 5px 16px;
+  border-radius: 8px;
+  border: 1px solid #ffffff33;
+  background: #0c1122cc;
+  color: var(--fg);
+  cursor: pointer;
+  margin-top: 6px;
+}
+#pauseBtn.paused {
+  background: #222a44cc;
+  color: #ffd166;
+}
+@media (max-width: 700px) {
+  #controls {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: auto;
+    bottom: 0;
+    margin: 0;
+    min-width: 0;
+    width: 100vw;
+    padding: 0;
+    font-size: 14px;
+    border-radius: 14px 14px 0 0;
+    box-shadow: 0 -2px 16px #0005;
+  }
+  #controlsPanel {
+    padding: 10px 6vw 10px 6vw;
+  }
+}
+:root {
+  --bg: #050610;
+  --fg: #e8efff;
+  --muted: #9aa7c0;
+  --accent: #68a3ff;
+}
+
+* { box-sizing: border-box; }
+
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: 'Poppins', 'Montserrat', 'Segoe UI', 'Arial', sans-serif;
+  background: var(--bg, #0a0d20);
+  color: var(--fg, #e8efff);
+  min-height: 100vh;
+  overflow-x: hidden;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+h1, h2, h3, .landing-title {
+  font-family: 'Montserrat', 'Poppins', 'Segoe UI', 'Arial', sans-serif;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+#starfield {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  display: block;
+}
+
+#app {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  place-items: center;
+}
+
+#orbits {
+  width: min(95vw, 1100px);
+  height: auto;
+  max-height: 85vh;
+  shape-rendering: geometricPrecision;
+}
+
+.label {
+  fill: var(--muted);
+  font-size: 12px;
+  user-select: none;
+  text-anchor: middle;
+}
+
+#hud {
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: color-mix(in oklab, white 3%, transparent);
+  backdrop-filter: blur(6px) saturate(120%);
+  border: 1px solid #ffffff22;
+  border-radius: 10px;
+  padding: 8px 12px;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  color: var(--fg);
+  text-shadow: 0 1px 0 #0006;
+}
+
+#hud .time { font-variant-numeric: tabular-nums; letter-spacing: 0.5px; }
+#timeText { font-size: 18px; }
+#toggleFormat {
+  margin-left: 8px;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid #ffffff33;
+  background: #0c1122cc;
+  color: var(--fg);
+  cursor: pointer;
+}
+#toggleFormat:hover { border-color: var(--accent); }
+
+.legend { color: var(--muted); font-size: 12px; }
+.legend .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; box-shadow: 0 0 6px #fff3; }
+.legend .dot.mercury { background: #c2d3ff; border: 1px solid #8ab6ff; }
+.legend .dot.earth { background: #b7ffd8; border: 1px solid #4df29f; }
+
+/* Accessibility focus styles */
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+@media (max-width: 560px) {
+  #timeText { font-size: 16px; }
+  #hud { padding: 6px 10px; gap: 10px; }
+  .legend { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { scroll-behavior: auto !important; }
+}

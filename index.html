@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Celestial Clock — Time by the Heavens</title>
+  <meta name="description" content="A real-time, interactive visualization that tells time using stars and planetary orbits." />
+  <link rel="preload" href="./src/styles.css" as="style" />
+  <link rel="stylesheet" href="./src/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./src/styles.css" />
+</head>
+<body>
+  <!-- Landing/Loading overlay -->
+  <div id="landing" role="dialog" aria-modal="true" tabindex="-1">
+    <div class="landing-content">
+      <h1 class="landing-title">Celestial Clock</h1>
+      <p class="landing-desc">Experience time as cosmic motion.<br>Watch the universe tick in orbits and stars.</p>
+  <button id="startBtn" class="landing-start">Start</button>
+  <canvas class="landing-stars" id="landingStars"></canvas>
+    </div>
+  </div>
+
+  <!-- Background starfield canvas -->
+  <canvas id="starfield" aria-hidden="true"></canvas>
+
+  <!-- Foreground orbital visualization -->
+  <main id="app">
+    <svg id="orbits" viewBox="0 0 1000 700" role="img" aria-label="Orbital clock visualization">
+      <defs>
+        <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#fff7a1" />
+          <stop offset="60%" stop-color="#ffd166" />
+          <stop offset="100%" stop-color="#ff9f1c" />
+        </radialGradient>
+        <filter id="softShadow" x="-50%" y="-50%" width="200%" height="200%">
+          <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.4" />
+        </filter>
+      </defs>
+
+      <!-- Sun at the focus -->
+      <g id="sun-group" transform="translate(500,350)">
+        <circle r="36" fill="url(#sunGlow)" filter="url(#softShadow)"></circle>
+      </g>
+
+      <!-- Mercury (seconds-in-minute) orbit -->
+      <g id="mercury-orbit-group">
+  <ellipse id="mercury-orbit" cx="500" cy="350" rx="220" ry="200" fill="none" stroke="#ffffff22" stroke-width="1.5"></ellipse>
+        <circle id="mercury" r="6" fill="#c2d3ff" stroke="#8ab6ff" stroke-width="1">
+          <title id="mercury-title">Seconds in minute: --</title>
+        </circle>
+  <text id="mercury-label" class="label" x="500" y="150">Seconds in Minute</text>
+      </g>
+
+      <!-- Earth (minutes-in-hour) orbit -->
+      <g id="earth-orbit-group">
+  <ellipse id="earth-orbit" cx="500" cy="350" rx="320" ry="260" fill="none" stroke="#ffffff22" stroke-width="1.5"></ellipse>
+        <circle id="earth" r="9" fill="#b7ffd8" stroke="#4df29f" stroke-width="1">
+          <title id="earth-title">Minutes in hour: --</title>
+        </circle>
+  <text id="earth-label" class="label" x="500" y="90">Minutes in Hour</text>
+      </g>
+
+      <!-- Venus (hours-in-day) orbit -->
+      <g id="venus-orbit-group">
+  <ellipse id="venus-orbit" cx="500" cy="350" rx="400" ry="300" fill="none" stroke="#ffffff1e" stroke-width="1.2"></ellipse>
+  <circle id="venus" r="7.5" fill="#e0b3ff" stroke="#b266ff" stroke-width="1">
+          <title id="venus-title">Hours in day: --</title>
+        </circle>
+  <text id="venus-label" class="label" x="500" y="50">Hours in Day</text>
+      </g>
+
+      <!-- Mars (day-of-week) orbit -->
+      <g id="mars-orbit-group">
+  <ellipse id="mars-orbit" cx="500" cy="350" rx="470" ry="330" fill="none" stroke="#ffffff18" stroke-width="1.2"></ellipse>
+  <circle id="mars" r="7.5" fill="#ffb3e6" stroke="#ff4fa3" stroke-width="1">
+          <title id="mars-title">Day of week: --</title>
+        </circle>
+  <text id="mars-label" class="label" x="500" y="20">Day of Week</text>
+      </g>
+
+      <!-- Jupiter (day-of-month) orbit -->
+      <g id="jupiter-orbit-group">
+  <ellipse id="jupiter-orbit" cx="500" cy="350" rx="540" ry="360" fill="none" stroke="#ffffff12" stroke-width="1.2"></ellipse>
+  <circle id="jupiter" r="10.5" fill="#a6e6ff" stroke="#4fbaff" stroke-width="1">
+          <title id="jupiter-title">Day of month: --</title>
+        </circle>
+  <text id="jupiter-label" class="label" x="500" y="10">Day of Month</text>
+      </g>
+
+      <!-- Saturn (day-of-year) orbit -->
+      <g id="saturn-orbit-group">
+  <ellipse id="saturn-orbit" cx="500" cy="350" rx="610" ry="390" fill="none" stroke="#ffffff0e" stroke-width="1.2"></ellipse>
+  <circle id="saturn" r="10.5" fill="#f3baff" stroke="#e14fff" stroke-width="1">
+          <title id="saturn-title">Day of year: --</title>
+        </circle>
+  <text id="saturn-label" class="label" x="500" y="0">Day of Year</text>
+      </g>
+
+      <!-- optional tick marks, drawn dynamically in JS for crispness -->
+    </svg>
+
+    <section id="hud" aria-live="polite" aria-atomic="true">
+      <div class="time">
+        <span id="timeText">--:--:--</span>
+        <button id="toggleFormat" title="Toggle 12/24h">12h</button>
+      </div>
+    </section>
+
+    <!-- Floating control panel -->
+    <aside id="controls" aria-label="Visualization Controls">
+      <button id="controlsToggle" aria-expanded="true" aria-controls="controlsPanel" title="Show/hide controls" style="padding-left: 10px"> ☰ Controls</button>
+      <div id="controlsPanel">
+        <h2>Controls</h2>
+        <div class="control-group">
+          <label>Orbits:</label>
+          <div class="orbit-toggles">
+            <label><input type="checkbox" id="toggleMercury" checked> Seconds</label>
+            <label><input type="checkbox" id="toggleEarth" checked> Minutes</label>
+            <label><input type="checkbox" id="toggleVenus" checked> Hours</label>
+            <br />
+            <label><input type="checkbox" id="toggleMars" checked> Week</label>
+            <label><input type="checkbox" id="toggleJupiter" checked> Month</label>
+            <label><input type="checkbox" id="toggleSaturn" checked> Year</label>
+          </div>
+        </div>
+        <div class="control-group">
+          <button id="pauseBtn">Pause</button>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <noscript>
+    This site requires JavaScript for animation. Please enable JavaScript.
+  </noscript>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
